@@ -21,7 +21,7 @@ export default defineConfig({
     server: {
         proxy: {
           '/': {
-            target: 'http://national-app.test', // Change this to match your Laragon server port
+            target: 'http://national-app.test',
             changeOrigin: true,
             secure: false,
           },

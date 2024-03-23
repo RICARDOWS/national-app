@@ -9,7 +9,7 @@ class Auto extends Model
 {
     use HasFactory;
 
-    protected $fillabe =['marca','modelo','tipo',];
+    protected $fillable =['marca','modelo','tipo',];
 
     //relationships
     public function locations()
