@@ -18,4 +18,13 @@ export default defineConfig({
             },
         }),
     ],
+    server: {
+        proxy: {
+          '/': {
+            target: 'http://national-app.test', // Change this to match your Laragon server port
+            changeOrigin: true,
+            secure: false,
+          },
+        },
+      },
 });
