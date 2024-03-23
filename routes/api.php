@@ -31,3 +31,7 @@ Route::post('/locacion', [LocationController::class, 'store']);
 Route::get('/locaciones/{id}', [LocationController::class, 'show']);
 Route::put('/locaciones/{id}', [LocationController::class, 'update']);
 Route::delete('/locaciones/{id}', [LocationController::class, 'destroy']);
+
+Route::post('/autos/{auto}/assign/{locacion}', [AutoController::class, 'asignarLocacion']);
+
+Route::get('/autos/by-location/{location}', [AutoController::class, 'autosByLocacion']);

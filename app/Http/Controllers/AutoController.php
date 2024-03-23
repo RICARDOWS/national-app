@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auto;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class AutoController extends Controller
@@ -56,5 +57,18 @@ class AutoController extends Controller
         return response()->json(null, 204);
     }
 
-    
+    //auto location
+    public function asignarLocacion(Auto $auto, Location $locacion)
+    {
+        $auto->locations()->attach($locacion);
+
+        return response()->json(['message' => 'Auto asignado a la locación correctamente'], 200);
+    }
+
+    public function autosPorLocacion(Location $location)
+    {
+        $autos = $location->autos()->get();
+
+        return response()->json($autos);
+    }
 }
