@@ -78,7 +78,9 @@ onMounted(() => {
                             </div>
                             <!-- filtro -->
                             <div class="my-auto">
-                                <PrimaryButton>Agregar Carro</PrimaryButton>
+                                 <Link :href="route('auto.create')">
+                                    <PrimaryButton>Agregar Carro</PrimaryButton>
+                                </Link>
                             </div>
                         </div>
                         <!-- tabla -->
