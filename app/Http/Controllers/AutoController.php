@@ -11,7 +11,7 @@ class AutoController extends Controller
 {
     public function index()
     {
-        $autos = Auto::all();
+        $autos = Auto::with(['locations'])->get();
 
         return response()->json($autos);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Auto;
 use App\Models\Location;
 use Illuminate\Http\Request;
 
@@ -9,9 +10,9 @@ class LocationController extends Controller
 {
     public function index()
     {
-        $autos = Location::all();
+        $locaciones = Location::all();
 
-        return response()->json($autos);
+        return response()->json($locaciones);
     }
 
     public function store(Request $request)
@@ -54,6 +55,27 @@ class LocationController extends Controller
         $locacion->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function assignations(){
+        $assignations = Location::with(['autos'])->get();
+
+        return response()->json($assignations);
+    }
+
+    public function assignationStore(Request $request)
+    {
+        $request->validate([
+            'auto_id' => 'required',
+            'location_id' => 'required',
+        ]);
+
+        $auto = Auto::findOrFail($request->auto_id);
+        $locacion = Location::findOrFail($request->location_id);
+
+        $auto->locations()->attach($locacion);
+
+        return redirect()->route('assignations')->with('message', 'Exito');
     }
 
 

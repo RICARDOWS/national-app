@@ -1,15 +1,21 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed  } from "vue";
 import axios from "axios";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from '@/Components/TextInput.vue';
 
 const autosArray = ref([]);
+const toSearch = ref('');
 
 const getAutos = async () => {
-    let response = await axios.get(`/api/autos`);
-    autosArray.value = response.data;
+    try {
+        let response = await axios.get(`/api/autos`);
+        autosArray.value = response.data;
+    } catch (error) {
+        console.error('Error fetching autos:', error);
+    }
 };
 
 const form = useForm({});
@@ -20,6 +26,18 @@ const destroy = async (id) => {
         getAutos();
     }
 };
+
+const filteredAutos = computed(() => {
+  if (!toSearch.value.trim()) {
+    return autosArray.value; 
+  }
+  
+   return autosArray.value.filter(auto => {
+    return auto.locations.some(location => {
+      return location.nombre.toLowerCase().includes(toSearch.value.toLowerCase());
+    });
+  });
+});
 
 onMounted(() => {
     getAutos();
@@ -40,17 +58,28 @@ onMounted(() => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <div class="mb-2">
-                            <Link :href="route('auto.create')">
-                                <PrimaryButton>Agregar Carro</PrimaryButton>
-                            </Link>
+                        <!-- boton agregar -->
+                        <div class="mb-4">
+                            <InputLabel for="toSearch" value="Buscar locación" />
+
+                            <TextInput
+                                id="toSearch"
+                                type="text"
+                                class="mt-1 block w-full"
+                                v-model="toSearch"
+                            />
                         </div>
+                        <!-- filtro -->
+                        <div class="mb-4">
+                            <PrimaryButton>Agregar Carro</PrimaryButton>
+                        </div>
+                        <!-- tabla -->
                         <div
                             class="relative overflow-x-auto shadow-md sm:rounded-lg"
                         >
                             <table
                                 class="w-full divide-y divide-gray-200 text-gray-500 dark:text-gray-400"
-                                v-if="autosArray.length"
+                                v-if="filteredAutos.length"
                             >
                                 <thead
                                     class="bg-gray-50 font-medium text-gray-500 uppercase tracking-wider"
@@ -84,6 +113,12 @@ onMounted(() => {
                                             scope="col"
                                             class="px-6 py-3 text-left text-md"
                                         >
+                                            Locaciones
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="px-6 py-3 text-left text-md"
+                                        >
                                             Acciones
                                         </th>
                                     </tr>
@@ -93,7 +128,7 @@ onMounted(() => {
                                 >
                                     <tr
                                         class="text-md text-gray-700 whitespace-nowrap"
-                                        v-for="(item, index) in autosArray"
+                                        v-for="(item, index) in filteredAutos"
                                         :key="index"
                                     >
                                         <td class="px-6 py-4 whitespace-normal">
@@ -107,6 +142,9 @@ onMounted(() => {
                                         </td>
                                         <td class="px-6 py-4 whitespace-normal">
                                             {{ item.tipo }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-normal">
+                                            {{ item.locations.map(local => local.nombre).join(', ') }}
                                         </td>
                                         <td class="px-6 py-4 ">
                                              <Link :href="route('auto.edit', item.id)" class="px-4 py-2 text-white bg-blue-600 rounded-lg">Editar</Link>

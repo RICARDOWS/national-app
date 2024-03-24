@@ -26,12 +26,14 @@ Route::get('/autos/{id}', [AutoController::class, 'show'])->name('api.auto.show'
 Route::put('/autos/{id}', [AutoController::class, 'update'])->name('api.auto.update');
 Route::delete('/autos/{id}', [AutoController::class, 'destroy'])->name('api.auto.destroy');
 
-Route::get('/locaciones', [LocationController::class, 'index']);
-Route::post('/locacion', [LocationController::class, 'store']);
-Route::get('/locaciones/{id}', [LocationController::class, 'show']);
-Route::put('/locaciones/{id}', [LocationController::class, 'update']);
-Route::delete('/locaciones/{id}', [LocationController::class, 'destroy']);
+Route::get('/locaciones', [LocationController::class, 'index'])->name('api.locacion.index');
+Route::post('/locacion', [LocationController::class, 'store'])->name('api.locacion.store');
+Route::get('/locaciones/{id}', [LocationController::class, 'show'])->name('api.locacion.show');
+Route::put('/locaciones/{id}', [LocationController::class, 'update'])->name('api.locacion.update');
+Route::delete('/locaciones/{id}', [LocationController::class, 'destroy'])->name('api.locacion.destroy');
 
 Route::post('/autos/{auto}/assign/{locacion}', [AutoController::class, 'asignarLocacion']);
 
 Route::get('/autos/by-location/{location}', [AutoController::class, 'autosByLocacion']);
+
+Route::get('/assignations', [LocationController::class, 'assignations']);

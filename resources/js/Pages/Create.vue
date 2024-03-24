@@ -24,7 +24,9 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("auto.store"));
+    form.post(
+        route("auto.store")
+    );
 };
 
 onMounted(() => {});
@@ -86,14 +88,15 @@ onMounted(() => {});
 
                             <div class="my-6">
                                 <InputLabel for="tipo" value="Tipo" />
-                                <TextInput
+                                <select
                                     id="tipo"
-                                    type="text"
-                                    class="mt-1 block w-full"
+                                    name="tipo"
+                                    class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                     v-model="form.tipo"
-                                    required
-                                    autofocus
-                                />
+                                >
+                                    <option value="camioneta">Camioneta</option>
+                                    <option value="auto" selected>Auto</option>
+                                </select>
 
                                 <InputError
                                     class="mt-2"

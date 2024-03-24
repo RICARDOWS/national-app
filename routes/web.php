@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AutoController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
+Route::get('/assignations', function () {
+    return Inertia::render('Assignations');
+})->name('assignations');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,5 +47,7 @@ Route::get('/auto/edit/{id}', [AutoController::class, 'edit'])->name('auto.edit'
 Route::post('/auto', [AutoController::class, 'storeView'])->name('auto.store');
 Route::put('/autos/{id}', [AutoController::class, 'updateView'])->name('auto.update');
 Route::delete('/autos/{id}', [AutoController::class, 'destroyView'])->name('auto.destroy');
+
+Route::post('/asignar', [LocationController::class, 'assignationStore'])->name('assignation.store');
 
 require __DIR__.'/auth.php';
